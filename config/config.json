@@ -1,0 +1,25 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "1234",
+    "database": "advance_cloud",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port":5432
+  }
+  ,
+  "test": {
+    "username": "root",
+    "password": "Jlabs@2021",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "Jlabs@2021",
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
