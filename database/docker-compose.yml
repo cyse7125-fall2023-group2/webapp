@@ -1,0 +1,11 @@
+services:
+  postgres:
+    hostname: postgres_local
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=csye7125
+      - PGUSER=csye7125
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=csye7125
