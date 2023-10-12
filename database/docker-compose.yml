@@ -1,11 +1,37 @@
+version: '2.1'
 services:
+  flyway:
+    image: flyway/flyway:latest
+    container_name: csye7125-flyway
+    command: -configFiles=/flyway/conf/flyway.config -locations=filesystem:/flyway/sql -connectRetries=60 migrate
+    networks:
+      - csye7125
+    volumes:
+      - ${PWD}/sql_versions:/flyway/sql
+      - ${PWD}/docker-flyway.config:/flyway/conf/flyway.config
+    depends_on:
+      postgres:
+        condition: service_healthy
   postgres:
-    hostname: postgres_local
-    image: postgres
+    hostname: postgres
+    image: postgres:latest
+    container_name: csye7125-postgres
+    restart: always
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    networks:
+      - csye7125
     environment:
       - POSTGRES_USER=csye7125
       - PGUSER=csye7125
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=csye7125
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" , "-U", "csye7125", "-d", "csye7125" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+networks:
+  csye7125:
+    driver: bridge
