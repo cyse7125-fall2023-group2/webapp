@@ -12,13 +12,14 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
   postgres:
     hostname: postgres
     image: postgres:latest
     container_name: csye7125-postgres
     restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
     networks:
       - csye7125
     environment:

@@ -1,11 +1,13 @@
+require('dotenv').config()
+module.exports=
 {
   "development": {
-    "username": "postgres",
-    "password": "1234",
-    "database": "advance_cloud",
-    "host": "127.0.0.1",
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
     "dialect": "postgres",
-    "port":5432
+    "port":process.env.DB_PORT
   }
   ,
   "test": {
