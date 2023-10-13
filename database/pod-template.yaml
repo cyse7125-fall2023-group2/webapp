@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: csye7125-webapp
+   labels:
+     "app" : "webapp"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "webapp"
+  template:
+      metadata:
+       labels:
+        app: webapp
+      spec:
+        containers:
+        - name: csye7125-webapp
+          image: sumanthksai/webapp:latest
+          ports:
+          - containerPort: 4000
+        initContainers:
+        - name: flyway-migrate
+          image: flyway-image:latest
+          command: ["flyway", "migrate"]
+          volumeMounts:
+          - name: flyway-config
+            mountPath: /flyway/conf
+          - name: flyway-scripts
+            mountPath: /flyway/sql
+        volumes:
+        - name: flyway-config
+          configMap:
+            name: flyway-config 
+
+    
+
+    
+  
