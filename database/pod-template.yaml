@@ -21,17 +21,19 @@ spec:
           - containerPort: 4000
         initContainers:
         - name: flyway-migrate
-          image: flyway-image:latest
-          command: ["flyway", "migrate"]
-          volumeMounts:
-          - name: flyway-config
-            mountPath: /flyway/conf
-          - name: flyway-scripts
-            mountPath: /flyway/sql
-        volumes:
-        - name: flyway-config
-          configMap:
-            name: flyway-config 
+          image: sumanthksai/flyway:latest
+          command: -configFiles=/flyway/conf/flyway.config -locations=filesystem:/flyway/sql -connectRetries=60 migrate #["flyway", "migrate"]
+          # volumeMounts:
+          # - name: flyway-config
+          #   mountPath: /flyway/conf
+          # - name: flyway-scripts
+          #   mountPath: /flyway/sql
+        # volumes:
+        # - name: flyway-config
+        #   configMap:
+        #     name: flyway-config 
+        # - name: flyway-scripts
+        #   emptyDir: {}
 
     
 
