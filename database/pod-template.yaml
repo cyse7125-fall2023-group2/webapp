@@ -16,7 +16,20 @@ spec:
       spec:
         containers:
         - name: csye7125-webapp
-          image: sumanthksai/webapp:latest
+          image: sumanthksai/group-csye7125:latest
+          env:
+            - name: DB_USERNAME
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "password"
+            - name: DB_NAME
+              value: "postgres"
+            - name: DB_HOST
+              value: "host.docker.internal"
+            - name: DB_PORT
+              value: "5432"
+            - name: APP_PORT
+              value: "4000"
           ports:
           - containerPort: 4000
         initContainers:
