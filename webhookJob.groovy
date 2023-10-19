@@ -1,4 +1,4 @@
-pipelineJob('webapp') {
+pipelineJob('webapp-pipeline') {
     description('My Pipeline Job Description')
     triggers {
           hudsonStartupTrigger {
@@ -17,7 +17,7 @@ pipelineJob('webapp') {
                 git {
                     remote {
                         url('https://github.com/cyse7125-fall2023-group2/webapp.git')
-                        credentials('GITHUB_CREDENTIALS_ID') // Specify your GitHub credentials ID
+                        credentials('webhook') // Specify your GitHub credentials ID
                     }
                     branch('main') // Specify the branch you want to build
                 }
