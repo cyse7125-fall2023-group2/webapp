@@ -1,30 +1,4 @@
-node {
-    
-    stage('Fetch GitHub Credentials') {
-        withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
-           git branch: 'main', credentialsId: 'GITHUB_CREDENTIALS_ID', url: 'https://github.com/cyse7125-fall2023-group2/webapp'        
-        }
-    }
-
-    stage('docker version') {
-        script{
-            sh 'docker --version'
-        }
-    }
-
-    stage('app docker build and push') {
-            withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_ID', usernameVariable: 'dockerHubUsername', passwordVariable: 'dockerHubPassword')]) {
-                sh """
-                    docker login -u ${dockerHubUsername} -p ${dockerHubPassword}
-                    docker build -t sumanthksai/group-csye7125:latest ./database                
-                    docker push sumanthksai/group-csye7125:latest
-                    docker build -t sumanthksai/flyway:latest ./database                
-                    docker push sumanthksai/flyway:latest
-
-                """
-        } 
-    }
-    pipeline {
+pipeline {
     agent any
     stages {
         stage('Fetch GitHub Credentials') {
@@ -66,7 +40,3 @@ node {
     }
 
 }
-
-
-  }
-
