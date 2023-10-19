@@ -7,6 +7,8 @@ pipelineJob('webapp') {
             quietPeriod("0")
             runOnChoice("False")
           }
+        githubPush() // Trigger the job on a GitHub push event
+
     }
     definition {
         cpsScm {
@@ -21,8 +23,5 @@ pipelineJob('webapp') {
                 }
             }
         }
-    }
-    triggers {
-        githubPush() // Trigger the job on a GitHub push event
     }
 }
