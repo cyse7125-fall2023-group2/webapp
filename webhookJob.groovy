@@ -10,7 +10,7 @@ pipelineJob('webapp-pipeline') {
                 github {
                     remote {
                         url('https://github.com/cyse7125-fall2023-group2/webapp.git')
-                        credentials('webhook') // Specify your GitHub credentials ID
+                        credentials('WEBHOOK_CREDENTIAL') // Specify your GitHub credentials ID
                     }
                     branch('main') // Specify the branch you want to build
                 }
