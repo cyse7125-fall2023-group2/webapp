@@ -1,8 +1,4 @@
 pipeline {
-    agent any
-    triggers {
-       githubPush()
-    }
 
     stages {
         stage('Fetch GitHub Credentials') {
@@ -25,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Define credentials for Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_ID', usernameVariable: 'dockerHubUsername', passwordVariable: 'dockerHubPassword')]) {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB-ID', usernameVariable: 'dockerHubUsername', passwordVariable: 'dockerHubPassword')]) {
                         sh """
                             docker login -u \${dockerHubUsername} -p \${dockerHubPassword}
                             docker build -t sumanthksai/group-csye7125:latest ./database
@@ -38,8 +34,6 @@ pipeline {
             }
         }
     }
-    triggers {
-        githubPush()
-    }
+
 
 }
