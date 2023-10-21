@@ -34,7 +34,7 @@ spec:
           - containerPort: 4000
         initContainers:
         - name: flyway-migrate
-          image: sumanthksai/flyway:1.2
+          image: sumanthksai/flyway:latest
           command: ["flyway","migrate", "-configFiles=/flyway/conf/flyway.config" ,"-locations=filesystem:/flyway/sql" , "-connectRetries=60"] 
 
     
