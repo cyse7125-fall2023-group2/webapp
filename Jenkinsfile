@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    triggers {
-       githubPush()
-    }
-
     stages {
         stage('Fetch GitHub Credentials') {
             steps {
@@ -38,8 +34,7 @@ pipeline {
             }
         }
     }
-    triggers {
-        githubPush()
-    }
+
 
 }
+
