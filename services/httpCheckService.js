@@ -85,6 +85,22 @@ const updateHttpCheck = async (req, res) => {
   let id = req.params.id;
 
   try {
+    if (!Object.keys(req.body).length) {
+      throw new Error();
+    }
+
+    if (
+      req.body.num_retries < 1 ||
+      req.body.num_retries > 5 ||
+      req.body.uptime_sla < 0 ||
+      req.body.uptime_sla > 100 ||
+      req.body.response_time_sla < 0 ||
+      req.body.response_time_sla > 100 ||
+      req.body.check_interval_in_seconds < 1 ||
+      req.body.check_interval_in_seconds > 86400
+    ) {
+      throw new Error();
+    }
     await db["http-check"].update(
       {
         ...req.body,
