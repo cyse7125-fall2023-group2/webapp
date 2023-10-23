@@ -24,7 +24,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_ID', usernameVariable: 'dockerHubUsername', passwordVariable: 'dockerHubPassword')]) {
                         sh """
                             docker login -u \${dockerHubUsername} -p \${dockerHubPassword}
-                            docker build -t sumanthksai/group-csye7125:latest ./database
+                            docker build -t sumanthksai/group-csye7125:latest .
                             docker push sumanthksai/group-csye7125:latest
                             docker build -t sumanthksai/flyway:latest ./database
                             docker push sumanthksai/flyway:latest

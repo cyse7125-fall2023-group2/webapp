@@ -32,10 +32,10 @@ spec:
               value: "3030"
           ports:
           - containerPort: 3030
-        # initContainers:
-        # - name: flyway-migrate
-        #   image: sumanthksai/flyway:latest
-        #   command: ["flyway","migrate", "-configFiles=/flyway/conf/flyway.config" ,"-locations=filesystem:/flyway/sql" , "-connectRetries=60"] 
+        initContainers:
+        - name: flyway-migrate
+          image: sumanthksai/flyway:latest
+          command: ["flyway","migrate", "-configFiles=/flyway/conf/flyway.config" ,"-locations=filesystem:/flyway/sql" , "-connectRetries=60"] 
 
     
 
