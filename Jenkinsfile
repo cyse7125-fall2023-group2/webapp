@@ -16,12 +16,15 @@ pipeline {
                 sh 'docker --version'
             }
         }
-        stage('Install semver') {
+        stage('Release') {
+            tools {
+                nodejs "node LTS"
+            }
             steps {
-                sh """
-                npm --version
+                sh '''
+                # Run optional required steps before releasing
                 npx semantic-release
-                """
+                '''
             }
         }
 
