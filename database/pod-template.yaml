@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: csye7125-webapp
+   name: csye7125
    labels:
      "app" : "webapp"
 spec:
@@ -21,7 +21,7 @@ spec:
             - name: DB_USERNAME
               value: "postgres"
             - name: DB_PASSWORD
-              value: "password"
+              value: "Asdfghjklz@2"
             - name: DB_NAME
               value: "app"
             - name: DB_HOST
@@ -29,9 +29,9 @@ spec:
             - name: DB_PORT
               value: "5432"
             - name: APP_PORT
-              value: "4000"
+              value: "3030"
           ports:
-          - containerPort: 4000
+          - containerPort: 3030
         initContainers:
         - name: flyway-migrate
           image: sumanthksai/flyway:latest
