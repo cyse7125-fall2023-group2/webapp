@@ -38,7 +38,7 @@ app.all("/healthz", async (req, res) => {
   res.status(405).send();
 });
 
-// app.use('/v1/http-check',httpCheckRoutes);
+app.use('/v1/http-check',httpCheckRoutes);
 
 const PORT = process.env.APP_PORT || 4000;
 app.listen({ port: PORT }, async () => {});
