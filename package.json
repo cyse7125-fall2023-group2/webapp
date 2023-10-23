@@ -22,5 +22,8 @@
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "semantic-release": "^22.0.5"
   }
 }
