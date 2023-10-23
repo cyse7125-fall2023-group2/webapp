@@ -16,6 +16,15 @@ pipeline {
                 sh 'docker --version'
             }
         }
+        stage('Install Npm Versioning') {
+            steps {
+                sh """
+                npm --version
+                npm install
+                npx semantic-versioning
+                """
+            }
+        }
 
         stage('app docker build and push') {
             steps {
