@@ -16,12 +16,11 @@ pipeline {
                 sh 'docker --version'
             }
         }
-        stage('Install Npm Versioning') {
+        stage('Install semver') {
             steps {
                 sh """
                 npm --version
-                npm install
-                npx semantic-versioning
+                npx semantic-release
                 """
             }
         }
