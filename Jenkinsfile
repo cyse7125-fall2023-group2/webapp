@@ -44,12 +44,8 @@ pipeline {
                 script {
                     // Define credentials for GitHub
                     withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
-                      withEnv(["GH_TOKEN=${githubToken}"]){
-                       sh """
-                            version_id = $(git describe --abbrev=0 --tags)
-                       """
-                      }     
-                    }
+                             version_id= sh(returnStdout: true, script: "git describe --abbrev=0 --tags").trim()
+                      
                 }
             }
         }
