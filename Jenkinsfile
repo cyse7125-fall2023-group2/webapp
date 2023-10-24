@@ -20,6 +20,7 @@ pipeline {
             steps {
                 sh '''
                 # Run optional required steps before releasing
+                npm ci
                 npx semantic-release
                 '''
             }
