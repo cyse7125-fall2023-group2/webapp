@@ -64,7 +64,7 @@ pipeline {
                             echo ${version_id}
                             docker login -u \${dockerHubUsername} -p \${dockerHubPassword}
                             docker build -t sumanthksai/group-csye7125:${version_id} .
-                            docker push sumanthksai/group-csye7125:latest
+                            docker push sumanthksai/group-csye7125:${version_id} 
                             docker build -t sumanthksai/flyway:latest ./database
                             docker push sumanthksai/flyway:latest
                         """
