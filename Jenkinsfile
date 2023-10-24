@@ -49,6 +49,7 @@ pipeline {
                 }
             }
         }
+        }
 
         stage('docker version') {
             steps {
