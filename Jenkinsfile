@@ -39,6 +39,20 @@ pipeline {
                 }
             }
         }
+        stage('post-release') {
+            steps {
+                script {
+                    // Define credentials for GitHub
+                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
+                      withEnv(["GH_TOKEN=${githubToken}"]){
+                       sh """
+                            version_id = $(git describe --abbrev=0 --tags)
+                       """
+                      }     
+                    }
+                }
+            }
+        }
 
         stage('docker version') {
             steps {
@@ -51,6 +65,7 @@ pipeline {
                     // Define credentials for Docker Hub
                     withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_ID', usernameVariable: 'dockerHubUsername', passwordVariable: 'dockerHubPassword')]) {
                         sh """
+                            echo ${version_id}
                             docker login -u \${dockerHubUsername} -p \${dockerHubPassword}
                             docker build -t sumanthksai/group-csye7125:latest .
                             docker push sumanthksai/group-csye7125:latest
