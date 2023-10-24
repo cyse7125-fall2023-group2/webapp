@@ -10,10 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/npm": "^11.0.0",
+
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
@@ -26,8 +23,5 @@
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
     "uuid": "^9.0.1"
-  },
-  "devDependencies": {
-    "semantic-release": "^22.0.5"
   }
 }
