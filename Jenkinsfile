@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        GH_TOKEN  = credentials('GITHUB_CREDENTIALS_ID')
+    }
     stages {
         stage('Fetch GitHub Credentials') {
             steps {
