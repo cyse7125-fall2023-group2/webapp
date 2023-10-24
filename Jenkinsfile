@@ -14,6 +14,18 @@ pipeline {
                 }
             }
         }
+        stage('find variables') {
+            steps {
+                script {
+                    // Define credentials for GitHub
+                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', variable: 'TOKEN')]) {
+                      sh '''
+                        echo "Token: $TOKEN" 
+                        '''        
+                    }
+                }
+            }
+        }
         stage('ci-checks') {
             steps {
                 sh '''
