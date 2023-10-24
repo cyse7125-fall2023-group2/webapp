@@ -44,8 +44,7 @@ pipeline {
                 script {
                     // Define credentials for GitHub
                     withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
-                             version_id= sh(returnStdout: true, script: "git describe --abbrev=0 --tags").trim()
-                      
+                    version_id= sh(returnStdout: true, script: "git describe --abbrev=0 --tags | tr -d 'v' ").trim()
                 }
             }
         }
@@ -64,7 +63,7 @@ pipeline {
                         sh """
                             echo ${version_id}
                             docker login -u \${dockerHubUsername} -p \${dockerHubPassword}
-                            docker build -t sumanthksai/group-csye7125:latest .
+                            docker build -t sumanthksai/group-csye7125:${version_id} .
                             docker push sumanthksai/group-csye7125:latest
                             docker build -t sumanthksai/flyway:latest ./database
                             docker push sumanthksai/flyway:latest
