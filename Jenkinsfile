@@ -14,18 +14,7 @@ pipeline {
                 }
             }
         }
-        stage('find variables') {
-            steps {
-                script {
-                    // Define credentials for GitHub
-                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', variable: 'TOKEN')]) {
-                      sh '''
-                        echo "Token: $TOKEN" 
-                        '''        
-                    }
-                }
-            }
-        }
+        
         stage('ci-checks') {
             steps {
                 sh '''
@@ -35,14 +24,22 @@ pipeline {
                 '''
             }
         }
-        stage('Release') {
+
+        stage('release') {
             steps {
-                sh '''
-                # Run optional required steps before releasing
-                npx semantic-release
-                '''
+                script {
+                    // Define credentials for GitHub
+                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
+                      withEnv(["GH_TOKEN=${githubToken}"]){
+                       sh """
+                            npx semantic-release
+                       """
+                      }     
+                    }
+                }
             }
         }
+
         stage('docker version') {
             steps {
                 sh 'docker --version'
