@@ -11,21 +11,27 @@ pipeline {
                 }
             }
         }
-        stage('docker version') {
+        stage('npm install') {
             steps {
-                sh 'docker --version'
+                sh '''
+                # Run optional required steps before releasing
+                npm --version
+                npm ci
+                '''
             }
         }
         stage('Release') {
             steps {
                 sh '''
-                # Run optional required steps before releasing
-                npm ci
                 npx semantic-release
                 '''
             }
         }
-
+        stage('docker version') {
+            steps {
+                sh 'docker --version'
+            }
+        }
         stage('app docker build and push') {
             steps {
                 script {
