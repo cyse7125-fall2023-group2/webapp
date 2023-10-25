@@ -19,23 +19,87 @@ spec:
           image: sumanthksai/group-csye7125:latest
           env:
             - name: DB_USERNAME
-              value: "postgres"
+              valueFrom:
+                configMapKeyRef:
+                  name: secrets
+                  key: DB_USERNAME
             - name: DB_PASSWORD
-              value: "Asdfghjklz@2"
+              valueFrom:
+                configMapKeyRef:
+                  name: secrets
+                  key: DB_PASSWORD
             - name: DB_NAME
-              value: "app"
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: DB_NAME
             - name: DB_HOST
-              value: "host.docker.internal"
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: DB_HOST
             - name: DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: DB_PORT
             - name: APP_PORT
-              value: "3030"
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: APP_PORT
           ports:
-          - containerPort: 3030
+          - containerPort: 4000
+          readinessProbe:
+            httpGet:
+              path: /healthz  
+              port: 4000      
+            initialDelaySeconds: 5  
+            periodSeconds: 10       
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
         initContainers:
         - name: flyway-migrate
           image: sumanthksai/flyway:latest
-          command: ["flyway","migrate", "-configFiles=/flyway/conf/flyway.config" ,"-locations=filesystem:/flyway/sql" , "-connectRetries=60"] 
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: secrets
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: secrets
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: DB_NAME
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: configs
+                  key: DB_PORT
+          volumeMounts:
+            - name: flyway-config-volume
+              mountPath: /flyway/conf
+          command: ["flyway","migrate", "-configFiles=/flyway/conf/flyway.conf" ,"-locations=filesystem:/flyway/sql" , "-connectRetries=60"] 
+        volumes:
+        - name: flyway-config-volume
+          configMap:
+            name: flyway-config
 
     
 
