@@ -20,12 +20,12 @@ spec:
           env:
             - name: DB_USERNAME
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: secrets
                   key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: secrets
                   key: DB_PASSWORD
             - name: DB_NAME
@@ -66,32 +66,6 @@ spec:
         initContainers:
         - name: flyway-migrate
           image: sumanthksai/flyway:latest
-          env:
-            - name: DB_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: secrets
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: secrets
-                  key: DB_PASSWORD
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: configs
-                  key: DB_NAME
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: configs
-                  key: DB_HOST
-            - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: configs
-                  key: DB_PORT
           volumeMounts:
             - name: flyway-config-volume
               mountPath: /flyway/conf
