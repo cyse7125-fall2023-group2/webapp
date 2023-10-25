@@ -69,11 +69,17 @@ spec:
           volumeMounts:
             - name: flyway-config-volume
               mountPath: /flyway/conf
+            - name: secret-volume
+              mountPath: /flyway/db_password.txt
+              subPath: db_password.txt
           command: ["flyway","migrate", "-configFiles=/flyway/conf/flyway.conf" ,"-locations=filesystem:/flyway/sql" , "-connectRetries=60"] 
         volumes:
         - name: flyway-config-volume
           configMap:
-            name: flyway-config
+            name: configs
+        - name: secret-volume
+          secret:
+            secretName: secrets
 
     
 
