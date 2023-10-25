@@ -16,7 +16,7 @@ spec:
       spec:
         containers:
         - name: csye7125-webapp
-          image: sumanthksai/group-csye7125:latest
+          image: sumanthksai/group-csye7125:1.3.0
           env:
             - name: DB_USERNAME
               valueFrom:

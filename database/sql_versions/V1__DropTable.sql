@@ -1,1 +1,1 @@
-DELETE FROM app."http-checks"
+DROP TABLE IF EXISTS app."http-checks"
