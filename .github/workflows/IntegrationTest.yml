@@ -43,13 +43,6 @@ jobs:
       - name: Install
         run: npm install
 
-        ## Build Step to Output dist/index.js
-      - name: Build
-        run: npm run build
-
-      - name: remove node_modules
-        run: rm -rf node-modules
-
       - name: Integration Test
         run: npm run test
       ## With the above semantic-release configuration, will create a release and push the dist/index.js file as well as all the tags required
