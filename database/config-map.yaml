@@ -7,8 +7,14 @@ data:
   DB_HOST: "host.docker.internal"
   DB_PORT: "5432"
   APP_PORT: "4000"
+  DB_USERNAME: "postgres"
+  HOST_DIRECTORY: "postgres-sql"
   flyway.conf: |
     flyway.url=jdbc:postgresql://host.docker.internal:5432/app
     flyway.user=postgres
     flyway.password=/flyway/db_password.txt
     flyway.baselineOnMigrate=false
+  init-db.sql: |
+    CREATE DATABASE app;
+    \c app;
+    CREATE SCHEMA app;
