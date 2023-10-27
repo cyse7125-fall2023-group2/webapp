@@ -39,15 +39,17 @@ jobs:
 
           touch .env
 
-          echo PGDATABASE=${{ secrets.PGDATABASE }} >> .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
 
-          echo PGUSER=${{ secrets.PGUSER }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
 
-          echo PGPASSWORD=${{ secrets.PGPASSWORD }} >> .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
 
-          echo PGPORT=${{ secrets.PGPORT }} >> .env
+          echo DB_PORT=${{ secrets.DB_PORT }} >> .env
 
-          echo PGHOST=${{ secrets.PGHOST }} >> .env
+          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+
+          echo APP_PORT=${{ secrets.APP_PORT }} >> .env
 
       - name: Install
         run: npm install
