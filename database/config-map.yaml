@@ -14,7 +14,3 @@ data:
     flyway.user=postgres
     flyway.password=/flyway/db_password.txt
     flyway.baselineOnMigrate=false
-  init-db.sql: |
-    CREATE DATABASE app;
-    \c app;
-    CREATE SCHEMA app;
