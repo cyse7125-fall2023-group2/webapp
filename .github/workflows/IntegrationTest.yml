@@ -14,6 +14,20 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: "postgres:latest"
+        env:
+          POSTGRES_DB: "app"
+          POSTGRES_USER: "postgres"
+          POSTGRES_PASSWORD: "postgres"
+          POSTGRES_PORT: "5432"
+          POSTGRES_HOST: "localhost"
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 16.x
@@ -25,36 +39,22 @@ jobs:
 
           touch .env
 
-          echo PGDATABASE=${{ secrets.PGDATABASE }} >> .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
 
-          echo PGUSER=${{ secrets.PGUSER }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
 
-          echo PGPASSWORD=${{ secrets.PGPASSWORD }} >> .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
 
-          echo PGPORT=${{ secrets.PGPORT }} >> .env
+          echo DB_PORT=${{ secrets.DB_PORT }} >> .env
 
-          echo PGHOST=${{ secrets.PGHOST }} >> .env
+          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-            node-version: 16.x
+          echo APP_PORT=${{ secrets.APP_PORT }} >> .env
 
       - name: Install
         run: npm install
 
-        ## Build Step to Output dist/index.js
-      - name: Build
-        run: npm run build
-
-      - name: remove node_modules
-        run: rm -rf node-modules
-
       - name: Integration Test
         run: npm run test
       ## With the above semantic-release configuration, will create a release and push the dist/index.js file as well as all the tags required
-      - name: Semantic Release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
