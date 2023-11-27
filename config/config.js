@@ -11,8 +11,8 @@ module.exports = {
   },
   test: {
     username: "postgres",
-    password: "1234",
-    database: "advance_cloud",
+    password: "postgres",
+    database: "accounts",
     host: "localhost",
     dialect: "postgres",
     port: 5432,

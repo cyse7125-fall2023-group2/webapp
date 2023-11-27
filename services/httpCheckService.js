@@ -7,6 +7,7 @@ const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
 const k8sApi = kc.makeApiClient(k8s.CustomObjectsApi);
 const batchV1Api = kc.makeApiClient(k8s.BatchV1Api);
+const coreV1Api = kc.makeApiClient(k8s.CoreV1Api);
 
 const createNewCheck = async (req, res) => {
   try {
@@ -34,24 +35,45 @@ const createNewCheck = async (req, res) => {
       check_updated: new Date().toISOString(),
     });
 
+    // const webapp_namespace = `webappcr-${req.body.name}`;
+    // const namespaceBody = {
+    //   apiVersion: 'v1',
+    //   kind: 'Namespace',
+    //   metadata: {
+    //     name: webapp_namespace,
+    //   },
+    // };
+    // await coreV1Api.createNamespace(namespaceBody).then(
+    //   (response) => {
+    //     console.log("Namespace created:", webapp_namespace);
+    //   },
+    //   (err) => {
+    //     console.error("Error creating Namespace:", err);
+    //   }
+    // );
+
     const webappcrs = {
       apiVersion: "crwebapp.my.domain/v1",
       kind: "WebappCR",
       metadata: {
-        name: `webappcr-${data.id}`,
+        name: `webappcr-${req.body.name}`,
+        namespace: "webapp",
       },
       spec: {
         // Add your custom spec fields here
-        backoffLimit: req.body.num_retries,
+        numRetries: req.body.num_retries,
         uri: req.body.uri,
       },
+      status: {
+        lastExecutionTime: new Date().toISOString()
+      }
     };
 
     k8sApi
       .createNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
-        "default",
+        "webapp",
         "webappcrs",
         webappcrs
       )
@@ -66,6 +88,7 @@ const createNewCheck = async (req, res) => {
         }
       );
   } catch (err) {
+    console.error(err);
     res.status(400).send("Bad Request");
   }
 };
@@ -119,7 +142,7 @@ const deleteHttpCheck = async (req, res) => {
       .deleteNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
-        "default",
+        "webapp",
         "webappcrs",
         customResourceName,
         undefined,
@@ -177,7 +200,7 @@ const updateHttpCheck = async (req, res) => {
     const updatedData = {
       spec: {
         // Update your Custom Resource spec fields here
-        backoffLimit: req.body.num_retries,
+        numRetries: req.body.num_retries,
         uri: req.body.uri,
       },
     };
@@ -186,7 +209,7 @@ const updateHttpCheck = async (req, res) => {
       .patchNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
-        "default",
+        "webapp",
         "webappcrs",
         customResourceName,
         updatedData,
