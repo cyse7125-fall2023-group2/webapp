@@ -20,8 +20,6 @@ Before you proceed, ensure you have the following prerequisites in place:
 - Familiarity with Jenkins and its configuration.
 
 
-
-
 - `app/`: Contains the source code of your web server application.
 - `__tests__/`: Holds the integration test code.
 - `flyway/`: Contains Flyway migration SQL scripts.
