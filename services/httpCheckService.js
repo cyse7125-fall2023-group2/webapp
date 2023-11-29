@@ -130,12 +130,6 @@ const deleteHttpCheck = async (req, res) => {
     if (Object.keys(req.body).length) {
       throw new Error();
     }
-
-    await db["http-check"].destroy({
-      where: {
-        id: id,
-      },
-    });
     const customResourceName = `webappcr-${id}`; // Replace with the name of your Custom Resource
 
     k8sApi
@@ -160,6 +154,12 @@ const deleteHttpCheck = async (req, res) => {
           res.status(400).send("Bad Request");
         }
       );
+
+      await db["http-check"].destroy({
+        where: {
+          id: id,
+        },
+      });
   } catch (err) {
     res.status(400).send("Bad Request");
   }
@@ -185,16 +185,6 @@ const updateHttpCheck = async (req, res) => {
     ) {
       throw new Error();
     }
-    await db["http-check"].update(
-      {
-        ...req.body,
-      },
-      {
-        where: {
-          id: id,
-        },
-      }
-    );
 
     const customResourceName = `webappcr-${id}`; // Replace with the name of your Custom Resource
     const updatedData = {
@@ -228,6 +218,17 @@ const updateHttpCheck = async (req, res) => {
         (err) => {
           console.error("Error updating WebappCRs:", err);
           res.status(400).send("Bad Request");
+        }
+      );
+
+      await db["http-check"].update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id: id,
+          },
         }
       );
   } catch (err) {
