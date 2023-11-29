@@ -63,10 +63,11 @@ const createNewCheck = async (req, res) => {
         // Add your custom spec fields here
         numRetries: req.body.num_retries,
         uri: req.body.uri,
+        serviceAccountName: "webappcr-controller-manager"
       },
       status: {
         lastExecutionTime: new Date().toISOString()
-      }
+      },
     };
 
     k8sApi
