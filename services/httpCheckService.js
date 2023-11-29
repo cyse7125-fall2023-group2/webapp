@@ -45,13 +45,18 @@ const createNewCheck = async (req, res) => {
     //   }
     // );
 
-    let httpId = uuidv4().toString()
+    let data = {
+      id: uuidv4().toString(),
+      ...req.body,
+      check_created: new Date().toISOString(),
+      check_updated: new Date().toISOString(),
+    }
 
     const webappcrs = {
       apiVersion: "crwebapp.my.domain/v1",
       kind: "WebappCR",
       metadata: {
-        name: `webappcr-${httpId}`,
+        name: `webappcr-${data.id}`,
         namespace: "webappcr-system",
       },
       spec: {
@@ -75,7 +80,7 @@ const createNewCheck = async (req, res) => {
       .then(
         (response) => {
           console.log("WebappCRs created:", response.body);
-          res.status(201).json(data.dataValues);
+          res.status(201).json(data);
         },
         (err) => {
           console.error("Error creating WebappCRs:", err);
@@ -83,12 +88,7 @@ const createNewCheck = async (req, res) => {
         }
       );
     
-    let data = await db["http-check"].create({
-      id: httpId,
-      ...req.body,
-      check_created: new Date().toISOString(),
-      check_updated: new Date().toISOString(),
-    });
+    await db["http-check"].create(data);
   } catch (err) {
     console.error(err);
     res.status(400).send("Bad Request");
