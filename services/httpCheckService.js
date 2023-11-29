@@ -28,13 +28,6 @@ const createNewCheck = async (req, res) => {
       throw new Error();
     }
 
-    let data = await db["http-check"].create({
-      id: uuidv4().toString(),
-      ...req.body,
-      check_created: new Date().toISOString(),
-      check_updated: new Date().toISOString(),
-    });
-
     // const webapp_namespace = `webappcr-${req.body.name}`;
     // const namespaceBody = {
     //   apiVersion: 'v1',
@@ -56,7 +49,7 @@ const createNewCheck = async (req, res) => {
       apiVersion: "crwebapp.my.domain/v1",
       kind: "WebappCR",
       metadata: {
-        name: `webappcr-${req.body.name}`,
+        name: `webappcr-${req.body.id}`,
         namespace: "webappcr-system",
       },
       spec: {
@@ -87,6 +80,13 @@ const createNewCheck = async (req, res) => {
           res.status(400).send("Bad Request");
         }
       );
+    
+    let data = await db["http-check"].create({
+      id: uuidv4().toString(),
+      ...req.body,
+      check_created: new Date().toISOString(),
+      check_updated: new Date().toISOString(),
+    });
   } catch (err) {
     console.error(err);
     res.status(400).send("Bad Request");
