@@ -45,11 +45,13 @@ const createNewCheck = async (req, res) => {
     //   }
     // );
 
+    let httpId = uuidv4().toString()
+
     const webappcrs = {
       apiVersion: "crwebapp.my.domain/v1",
       kind: "WebappCR",
       metadata: {
-        name: `webappcr-${req.body.id}`,
+        name: `webappcr-${httpId}`,
         namespace: "webappcr-system",
       },
       spec: {
@@ -82,7 +84,7 @@ const createNewCheck = async (req, res) => {
       );
     
     let data = await db["http-check"].create({
-      id: uuidv4().toString(),
+      id: httpId,
       ...req.body,
       check_created: new Date().toISOString(),
       check_updated: new Date().toISOString(),
