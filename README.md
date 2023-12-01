@@ -13,7 +13,6 @@ This project demonstrates a setup for a web server application with the followin
 
 Before you proceed, ensure you have the following prerequisites in place:
 
-
 - NodeJs installed and configured.
 - Docker installed on your local machine for building containers.
 - A running Jenkins instance.
