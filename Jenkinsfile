@@ -95,8 +95,7 @@ pipeline {
                 helm repo update
                 helm install istio-base istio/base -n istio-system --create-namespace istio-system --set defaultRevision=default
                 helm install istiod istio/istiod -n istio-system    
-                kubectl create namespace istio-ingress
-                helm install istio-ingress istio/gateway -n istio-ingress 
+                helm install istio-ingress istio/gateway -n istio-ingress --create-namespace istio-ingress
                 kubectl create namespace ${HELM_RELEASE_NAME} 
                 kubectl label namespace ${HELM_RELEASE_NAME} istio-injection=enabled
                 """
