@@ -131,7 +131,7 @@ pipeline {
                     """
                 }
 
-                def baseReleaseExists = sh(script: "helm get values istio-base > /dev/null 2>&1", returnStatus: true)
+                def baseReleaseExists = sh(script: "helm get values istio-base -n istio-system > /dev/null 2>&1", returnStatus: true)
 
                 if (baseReleaseExists == 0) {
                     sh "helm upgrade istio-base istio/base -n istio-system --set defaultRevision=default"
@@ -139,7 +139,7 @@ pipeline {
                     sh "helm install istio-base istio/base -n istio-system --set defaultRevision=default"
                 }
 
-                def istiodReleaseExists = sh(script: "helm get values istiod > /dev/null 2>&1", returnStatus: true)
+                def istiodReleaseExists = sh(script: "helm get values istiod -n istio-system > /dev/null 2>&1", returnStatus: true)
 
                 if (istiodReleaseExists == 0) {
                     sh "helm upgrade istiod istio/istiod -n istio-system"
@@ -147,7 +147,7 @@ pipeline {
                     sh "helm install istiod istio/istiod -n istio-system"
                 }
 
-                def ingressdReleaseExists = sh(script: "helm get values istio-ingress > /dev/null 2>&1", returnStatus: true)
+                def ingressdReleaseExists = sh(script: "helm get values istio-ingress -n istio-ingress > /dev/null 2>&1", returnStatus: true)
 
                 if (ingressdReleaseExists == 0) {
                     sh "helm upgrade istio-ingress istio/gateway -n istio-ingress"
