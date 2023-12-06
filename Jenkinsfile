@@ -110,17 +110,40 @@ pipeline {
     stage('install istio'){
         steps{
             script{
+                def istioSysNSExists = sh(script: "kubectl get namespace istio-system", returnStatus: true) == 0
+                def istioIngressNSExists = sh(script: "kubectl get namespace istio-ingress", returnStatus: true) == 0
+                def webappNSExists = sh(script: "kubectl get namespace ${HELM_RELEASE_NAME}", returnStatus: true) == 0
+
                 sh """
-                helm repo add istio https://istio-release.storage.googleapis.com/charts
-                helm repo update
-                kubectl create namespace istio-system
-                kubectl create namespace istio-ingress
+                    helm repo add istio https://istio-release.storage.googleapis.com/charts
+                    helm repo update
+                """
+
+                if (!istioSysNSExists) {
+                    sh """
+                        kubectl create namespace istio-system
+                    """
+                }
+
+                if (!istioIngressNSExists) {
+                    sh """
+                        kubectl create namespace istio-ingress
+                    """
+                }
+
+                sh """
                 helm install istio-base istio/base -n istio-system --set defaultRevision=default
                 helm install istiod istio/istiod -n istio-system    
-                helm install istio-ingress istio/gateway -n istio-ingress 
-                kubectl create namespace ${HELM_RELEASE_NAME} 
-                kubectl label namespace ${HELM_RELEASE_NAME} istio-injection=enabled
+                helm install istio-ingress istio/gateway -n istio-ingress                
                 """
+
+                if (!webappNSExists) {
+                    sh """
+                        kubectl create namespace ${HELM_RELEASE_NAME}
+                    """
+                }
+
+                sh "kubectl label namespace ${HELM_RELEASE_NAME} istio-injection=enabled"
             }
         }
     }
