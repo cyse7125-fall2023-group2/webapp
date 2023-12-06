@@ -131,11 +131,29 @@ pipeline {
                     """
                 }
 
-                sh """
-                helm install istio-base istio/base -n istio-system --set defaultRevision=default
-                helm install istiod istio/istiod -n istio-system    
-                helm install istio-ingress istio/gateway -n istio-ingress                
-                """
+                def baseReleaseExists = sh(script: "helm get values istio-base > /dev/null 2>&1", returnStatus: true)
+
+                if (baseReleaseExists == 0) {
+                    sh "helm upgrade istio-base istio/base -n istio-system --set defaultRevision=default"
+                } else {
+                    sh "helm install istio-base istio/base -n istio-system --set defaultRevision=default"
+                }
+
+                def istiodReleaseExists = sh(script: "helm get values istiod > /dev/null 2>&1", returnStatus: true)
+
+                if (istiodReleaseExists == 0) {
+                    sh "helm upgrade istiod istio/istiod -n istio-system"
+                } else {
+                    sh "helm install istiod istio/istiod -n istio-system"
+                }
+
+                def ingressdReleaseExists = sh(script: "helm get values istio-ingress > /dev/null 2>&1", returnStatus: true)
+
+                if (ingressdReleaseExists == 0) {
+                    sh "helm upgrade istio-ingress istio/gateway -n istio-ingress"
+                } else {
+                    sh "helm install istio-ingress istio/gateway -n istio-ingress"
+                }
 
                 if (!webappNSExists) {
                     sh """
