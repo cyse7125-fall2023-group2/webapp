@@ -7,8 +7,8 @@ pipeline {
         HELM_RELEASE_NAME = 'webapp'
         WEBAPP_NS = 'webapp'
         HELM_CHART_NAME = "csye7125-chart"
-        PROJECT_ID = 'csye7125-cloud-79'
-        CLUSTER_NAME = 'csye7125-cloud-79-gke'
+        PROJECT_ID = 'csye7125-cloud-003'
+        CLUSTER_NAME = 'csye7125-cloud-003-gke'
         REGION = 'us-east1'
     }
     stages{
