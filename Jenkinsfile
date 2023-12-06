@@ -164,9 +164,9 @@ pipeline {
                     def releaseExists = sh(script: "helm get values ${HELM_RELEASE_NAME} > /dev/null 2>&1", returnStatus: true)                        
                       
                     if (releaseExists == 0) {
-                            sh "helm upgrade ${HELM_RELEASE_NAME} ${asset_name} --set primaryContainer.tag=${latestTag} --namespace=${HELM_RELEASE_NAME}"
+                            sh "helm upgrade ${HELM_RELEASE_NAME} ${asset_name} --set primaryContainer.tag=${GIT_COMMIT} --namespace=${HELM_RELEASE_NAME}"
                         } else {
-                            sh "helm install ${HELM_RELEASE_NAME}  ${asset_name} --set primaryContainer.tag=${latestTag}"
+                            sh "helm install ${HELM_RELEASE_NAME}  ${asset_name} --set primaryContainer.tag=${GIT_COMMIT}"
                         }
                     }
     
