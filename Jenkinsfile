@@ -2,13 +2,13 @@ pipeline {
     agent any
     environment {
         GH_TOKEN  = credentials('GITHUB_CREDENTIALS_ID')
-        GOOGLE_APPLICATION_CREDENTIALS = credentials('webapp-operator')
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('webapp-operator-gcp')
         HELM_CHART_REPO = 'https://github.com/cyse7125-fall2023-group2/webapp-helm-chart'
         HELM_RELEASE_NAME = 'webapp'
         WEBAPP_NS = 'webapp'
         HELM_CHART_NAME = "csye7125-chart"
-        PROJECT_ID = 'csye7125-cloud-79'
-        CLUSTER_NAME = 'csye7125-cloud-79-gke'
+        PROJECT_ID = 'csye7125-cloud-003'
+        CLUSTER_NAME = 'csye7125-cloud-003-gke'
         REGION = 'us-east1'
     }
     stages{
