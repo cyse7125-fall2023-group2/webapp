@@ -2,9 +2,13 @@ pipeline {
     agent any
     environment {
         GH_TOKEN  = credentials('GITHUB_CREDENTIALS_ID')
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('webapp-operator')
         HELM_CHART_REPO = 'https://github.com/cyse7125-fall2023-group2/webapp-helm-chart'
         HELM_RELEASE_NAME = 'webapp'
         HELM_CHART_NAME = "csye7125-chart"
+        PROJECT_ID = 'csye7125-cloud-79'
+        CLUSTER_NAME = 'csye7125-cloud-79-gke'
+        REGION = 'us-east1'
     }
     stages{
     stage('Fetch GitHub Credentials') {
@@ -85,6 +89,22 @@ pipeline {
                 }
             }
         }
+
+    stage('Gcloud auth setup'){
+        steps{
+            script{
+                    withCredentials([file(credentialsId: 'webapp-operator', variable: 'SA_KEY')]) {
+
+                  sh """
+                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                    gcloud config set project ${PROJECT_ID}
+                    gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${REGION} --project ${PROJECT_ID}
+                    """
+                }
+
+            }
+        }
+       }
 
 
     stage('install istio'){
