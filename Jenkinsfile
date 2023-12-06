@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         GH_TOKEN  = credentials('GITHUB_CREDENTIALS_ID')
-        GOOGLE_APPLICATION_CREDENTIALS = credentials('webapp-operator')
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('webapp-operator-gcp')
         HELM_CHART_REPO = 'https://github.com/cyse7125-fall2023-group2/webapp-helm-chart'
         HELM_RELEASE_NAME = 'webapp'
         WEBAPP_NS = 'webapp'
@@ -94,7 +94,7 @@ pipeline {
     stage('Gcloud auth setup'){
         steps{
             script{
-                    withCredentials([file(credentialsId: 'webapp-operator', variable: 'SA_KEY')]) {
+                    withCredentials([file(credentialsId: 'webapp-operator-gcp', variable: 'SA_KEY')]) {
 
                   sh """
                     gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
