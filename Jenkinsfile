@@ -5,6 +5,7 @@ pipeline {
         GOOGLE_APPLICATION_CREDENTIALS = credentials('webapp-operator')
         HELM_CHART_REPO = 'https://github.com/cyse7125-fall2023-group2/webapp-helm-chart'
         HELM_RELEASE_NAME = 'webapp'
+        WEBAPP_NS = 'webapp'
         HELM_CHART_NAME = "csye7125-chart"
         PROJECT_ID = 'csye7125-cloud-79'
         CLUSTER_NAME = 'csye7125-cloud-79-gke'
@@ -179,12 +180,12 @@ pipeline {
                     withEnv(["GH_TOKEN=${githubToken}"]){
                         sh "gh release download ${latestTag} -R ${HELM_CHART_REPO} -p ${asset_name}"
                       }
-                    def releaseExists = sh(script: "helm get values ${HELM_RELEASE_NAME} > /dev/null 2>&1", returnStatus: true)                        
+                    def releaseExists = sh(script: "helm get values ${HELM_RELEASE_NAME} -n ${WEBAPP_NS}  > /dev/null 2>&1", returnStatus: true)                        
                       
                     if (releaseExists == 0) {
-                            sh "helm upgrade ${HELM_RELEASE_NAME} ${asset_name} --set primaryContainer.tag=${GIT_COMMIT} --namespace=${HELM_RELEASE_NAME}"
+                            sh "helm upgrade ${HELM_RELEASE_NAME} ${asset_name} --set primaryContainer.tag=${GIT_COMMIT} --namespace=${WEBAPP_NS}"
                         } else {
-                            sh "helm install ${HELM_RELEASE_NAME}  ${asset_name} --set primaryContainer.tag=${GIT_COMMIT}"
+                            sh "helm install ${HELM_RELEASE_NAME}  ${asset_name} --set primaryContainer.tag=${GIT_COMMIT} --namespace=${WEBAPP_NS}"
                         }
                     }
     
