@@ -28,23 +28,6 @@ const createNewCheck = async (req, res) => {
       throw new Error();
     }
 
-    // const webapp_namespace = `webappcr-${req.body.name}`;
-    // const namespaceBody = {
-    //   apiVersion: 'v1',
-    //   kind: 'Namespace',
-    //   metadata: {
-    //     name: webapp_namespace,
-    //   },
-    // };
-    // await coreV1Api.createNamespace(namespaceBody).then(
-    //   (response) => {
-    //     console.log("Namespace created:", webapp_namespace);
-    //   },
-    //   (err) => {
-    //     console.error("Error creating Namespace:", err);
-    //   }
-    // );
-
     let data = {
       id: uuidv4().toString(),
       ...req.body,
@@ -77,16 +60,6 @@ const createNewCheck = async (req, res) => {
         "webappcrs",
         webappcrs
       )
-      // .then(
-      //   (response) => {
-      //     console.log("WebappCRs created:", response.body);
-      //     res.status(201).json(data);
-      //   },
-      //   (err) => {
-      //     console.error("Error creating WebappCRs:", err);
-      //     res.status(400).send("Bad Request");
-      //   }
-      // );
     
     await db["http-check"].create(data);
   } catch (err) {
@@ -132,6 +105,13 @@ const deleteHttpCheck = async (req, res) => {
     if (Object.keys(req.body).length) {
       throw new Error();
     }
+
+    let result = await db["http-check"].findOne({ where: { id: id } });
+
+    if (!result) {
+      throw new Error();
+    }
+
     const customResourceName = `webappcr-${id}`; // Replace with the name of your Custom Resource
 
     await k8sApi
@@ -146,16 +126,6 @@ const deleteHttpCheck = async (req, res) => {
         undefined,
         undefined
       )
-      // .then(
-      //   (response) => {
-      //     console.log("WebappCRs deleted:", response.body);
-      //     res.status(204).send();
-      //   },
-      //   (err) => {
-      //     console.error("Error deleting WebappCRs:", err);
-      //     res.status(400).send("Bad Request");
-      //   }
-      // );
 
       await db["http-check"].destroy({
         where: {
