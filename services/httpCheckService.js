@@ -133,7 +133,7 @@ const deleteHttpCheck = async (req, res) => {
           id: id,
         },
       });
-      res.status(201).json(data);
+      res.status(204).send();
   } catch (err) {
     res.status(400).send("Bad Request");
   }
