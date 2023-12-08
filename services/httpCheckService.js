@@ -57,7 +57,7 @@ const createNewCheck = async (req, res) => {
       kind: "WebappCR",
       metadata: {
         name: `webappcr-${data.id}`,
-        namespace: "webapp",
+        namespace: "webappcr-system",
       },
       spec: {
         // Add your custom spec fields here
@@ -73,7 +73,7 @@ const createNewCheck = async (req, res) => {
       .createNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
-        "webapp",
+        "webappcr-system",
         "webappcrs",
         webappcrs
       )
@@ -138,7 +138,7 @@ const deleteHttpCheck = async (req, res) => {
       .deleteNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
-        "webapp",
+        "webappcr-system",
         "webappcrs",
         customResourceName,
         undefined,
@@ -201,7 +201,7 @@ const updateHttpCheck = async (req, res) => {
       .patchNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
-        "webapp",
+        "webappcr-system",
         "webappcrs",
         customResourceName,
         updatedData,
