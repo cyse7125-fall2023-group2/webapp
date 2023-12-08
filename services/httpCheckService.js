@@ -28,23 +28,6 @@ const createNewCheck = async (req, res) => {
       throw new Error();
     }
 
-    // const webapp_namespace = `webappcr-${req.body.name}`;
-    // const namespaceBody = {
-    //   apiVersion: 'v1',
-    //   kind: 'Namespace',
-    //   metadata: {
-    //     name: webapp_namespace,
-    //   },
-    // };
-    // await coreV1Api.createNamespace(namespaceBody).then(
-    //   (response) => {
-    //     console.log("Namespace created:", webapp_namespace);
-    //   },
-    //   (err) => {
-    //     console.error("Error creating Namespace:", err);
-    //   }
-    // );
-
     let data = {
       id: uuidv4().toString(),
       ...req.body,
@@ -69,7 +52,7 @@ const createNewCheck = async (req, res) => {
       },
     };
 
-    k8sApi
+    await k8sApi
       .createNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
@@ -77,18 +60,9 @@ const createNewCheck = async (req, res) => {
         "webappcrs",
         webappcrs
       )
-      .then(
-        (response) => {
-          console.log("WebappCRs created:", response.body);
-          res.status(201).json(data);
-        },
-        (err) => {
-          console.error("Error creating WebappCRs:", err);
-          res.status(400).send("Bad Request");
-        }
-      );
     
     await db["http-check"].create(data);
+    res.status(201).json(data);
   } catch (err) {
     console.error(err);
     res.status(400).send("Bad Request");
@@ -132,9 +106,16 @@ const deleteHttpCheck = async (req, res) => {
     if (Object.keys(req.body).length) {
       throw new Error();
     }
+
+    let result = await db["http-check"].findOne({ where: { id: id } });
+
+    if (!result) {
+      throw new Error();
+    }
+
     const customResourceName = `webappcr-${id}`; // Replace with the name of your Custom Resource
 
-    k8sApi
+    await k8sApi
       .deleteNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
@@ -146,22 +127,13 @@ const deleteHttpCheck = async (req, res) => {
         undefined,
         undefined
       )
-      .then(
-        (response) => {
-          console.log("WebappCRs deleted:", response.body);
-          res.status(204).send();
-        },
-        (err) => {
-          console.error("Error deleting WebappCRs:", err);
-          res.status(400).send("Bad Request");
-        }
-      );
 
       await db["http-check"].destroy({
         where: {
           id: id,
         },
       });
+      res.status(204).send();
   } catch (err) {
     res.status(400).send("Bad Request");
   }
@@ -197,7 +169,7 @@ const updateHttpCheck = async (req, res) => {
       },
     };
 
-    k8sApi
+    await k8sApi
       .patchNamespacedCustomObject(
         "crwebapp.my.domain",
         "v1",
@@ -212,16 +184,6 @@ const updateHttpCheck = async (req, res) => {
           headers: { "Content-Type": "application/merge-patch+json" },
         }
       )
-      .then(
-        (response) => {
-          console.log("WebappCRs updated:", response.body);
-          res.status(204).send();
-        },
-        (err) => {
-          console.error("Error updating WebappCRs:", err);
-          res.status(400).send("Bad Request");
-        }
-      );
 
       await db["http-check"].update(
         {
@@ -233,6 +195,7 @@ const updateHttpCheck = async (req, res) => {
           },
         }
       );
+      res.status(204).send();
   } catch (err) {
     res.status(400).send("Bad Request");
   }
