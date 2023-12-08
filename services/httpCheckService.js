@@ -62,6 +62,7 @@ const createNewCheck = async (req, res) => {
       )
     
     await db["http-check"].create(data);
+    res.status(201).json(data);
   } catch (err) {
     console.error(err);
     res.status(400).send("Bad Request");
@@ -132,6 +133,7 @@ const deleteHttpCheck = async (req, res) => {
           id: id,
         },
       });
+      res.status(201).json(data);
   } catch (err) {
     res.status(400).send("Bad Request");
   }
@@ -182,16 +184,6 @@ const updateHttpCheck = async (req, res) => {
           headers: { "Content-Type": "application/merge-patch+json" },
         }
       )
-      // .then(
-      //   (response) => {
-      //     console.log("WebappCRs updated:", response.body);
-      //     res.status(204).send();
-      //   },
-      //   (err) => {
-      //     console.error("Error updating WebappCRs:", err);
-      //     res.status(400).send("Bad Request");
-      //   }
-      // );
 
       await db["http-check"].update(
         {
@@ -203,6 +195,7 @@ const updateHttpCheck = async (req, res) => {
           },
         }
       );
+      res.status(204).send();
   } catch (err) {
     res.status(400).send("Bad Request");
   }
