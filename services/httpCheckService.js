@@ -159,7 +159,6 @@ const updateHttpCheck = async (req, res) => {
     ) {
       throw new Error();
     }
-
     const customResourceName = `webappcr-${id}`; // Replace with the name of your Custom Resource
     const updatedData = {
       spec: {
