@@ -33,31 +33,31 @@ pipeline {
             }
         }
 
-    stage('release') {
-            steps {
-                script {
-                    // Define credentials for GitHub
-                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
-                      withEnv(["GH_TOKEN=${githubToken}"]){
-                       sh """
-                            npx semantic-release
-                       """
-                      }     
-                    }
-                }
-            }
-        }
-    stage('post-release') {
-            steps {
-                script {
-                    // Define credentials for GitHub
-                    withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
-                    version_id= sh(returnStdout: true, script: "git describe --abbrev=0 --tags | tr -d 'v' ").trim()
-                    sh "echo ${version_id}"
-                }
-            }
-        }
-        }
+    // stage('release') {
+    //         steps {
+    //             script {
+    //                 // Define credentials for GitHub
+    //                 withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
+    //                   withEnv(["GH_TOKEN=${githubToken}"]){
+    //                    sh """
+    //                         npx semantic-release
+    //                    """
+    //                   }     
+    //                 }
+    //             }
+    //         }
+    //     }
+    // stage('post-release') {
+    //         steps {
+    //             script {
+    //                 // Define credentials for GitHub
+    //                 withCredentials([usernamePassword(credentialsId: 'GITHUB_CREDENTIALS_ID', usernameVariable: 'githubUsername', passwordVariable: 'githubToken')]) {
+    //                 version_id= sh(returnStdout: true, script: "git describe --abbrev=0 --tags | tr -d 'v' ").trim()
+    //                 sh "echo ${version_id}"
+    //             }
+    //         }
+    //     }
+    //     }
 
     stage('docker version') {
             steps {
