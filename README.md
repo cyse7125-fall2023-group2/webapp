@@ -8,7 +8,6 @@ This project demonstrates a setup for a web server application with the followin
 - Integration tests to ensure the functionality of the web server.
 - Docker builds for the web server and a Flyway container for database migration.
 - A Jenkins pipeline to automate building, testing, and deploying the web server.
-
 ### Prerequisites
 
 Before you proceed, ensure you have the following prerequisites in place:
