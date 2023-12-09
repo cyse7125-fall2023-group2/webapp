@@ -11,6 +11,10 @@ const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get("/healthz2", async (req, res) => {
+  return res.status(200).send();
+})
+
 app.get("/healthz", async (req, res) => {
   res.setHeader("cache-control", "no-cache");
   if (req.method === "GET" && Object.keys(req.query).length > 0) {
