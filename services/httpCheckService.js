@@ -139,6 +139,10 @@ const deleteHttpCheck = async (req, res) => {
   }
 };
 
+const patchUpdateHttpCheck = async (req, res) => {
+  res.status(405).send();
+}
+
 const updateHttpCheck = async (req, res) => {
   let id = req.params.id;
 
@@ -206,4 +210,5 @@ module.exports = {
   getAllHttpCheck,
   deleteHttpCheck,
   updateHttpCheck,
+  patchUpdateHttpCheck
 };
