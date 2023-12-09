@@ -6,6 +6,7 @@ router.post("/", httpCheck.createNewCheck);
 router.get("/:id", httpCheck.getHttpCheck);
 router.delete("/:id", httpCheck.deleteHttpCheck);
 router.put("/:id", httpCheck.updateHttpCheck);
+router.patch("/:id", httpCheck.patchUpdateHttpCheck);
 router.get("/", httpCheck.getAllHttpCheck);
 
 module.exports = router;
